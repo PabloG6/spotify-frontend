@@ -1,0 +1,14 @@
+{
+    "/api/*": {
+        "target": "http://localhost:3000",
+        "secure": false,
+        "logLevel": "debug",
+        "pathRewrite": {"^/api": ""}
+    },
+    "/v1/me/*": {
+        "target": "https://api.spotify.com/v1/me/",
+        "secure": true,
+        "logLevel": "debug",
+        "pathRewrite": {"^/v1/me/*": ""}
+    }
+}

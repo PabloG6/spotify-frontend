@@ -1,6 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Component, OnDestroy, OnInit } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { Observable, of } from 'rxjs';
 import { catchError, map, mergeMap } from 'rxjs/operators';
 import { environment } from 'src/environments/environment';
@@ -17,6 +17,7 @@ export class RedirectComponent implements OnInit, OnDestroy {
   constructor(
     private activatedRoute: ActivatedRoute,
     private httpClient: HttpClient,
+    private readonly router: Router,
     private spotifyService: SpotifyService
   ) {}
  
@@ -24,13 +25,12 @@ export class RedirectComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     const $auth_code = this.activatedRoute.queryParams.pipe(
       mergeMap((params) => this.spotifyService.getToken(params)),
-      map((tokens) => tokens)
     );
 
     
 
     this.subsink.sink = $auth_code.subscribe((token) => {
-      console.log(token);
+        this.router.navigate(['dashboard'])
     })
   }
 

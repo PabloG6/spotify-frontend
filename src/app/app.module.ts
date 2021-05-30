@@ -7,13 +7,15 @@ import { AppComponent } from './app.component';
 import { LoginComponent } from './login/login.component';
 import { WelcomePageComponent } from './welcome-page/welcome-page.component';
 import { RedirectComponent } from './redirect/redirect.component';
+import { DashboardComponent } from './dashboard/dashboard.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     LoginComponent,
     WelcomePageComponent,
-    RedirectComponent
+    RedirectComponent,
+    DashboardComponent
   ],
   imports: [
     BrowserModule,
