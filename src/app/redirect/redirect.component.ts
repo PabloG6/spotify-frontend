@@ -5,7 +5,8 @@ import { Observable, of } from 'rxjs';
 import { catchError, map, mergeMap } from 'rxjs/operators';
 import { environment } from 'src/environments/environment';
 import { SubSink } from 'subsink';
-import { SpotifyAuthToken } from '../models/token';
+import { ISpotifyCredentials } from '../models/token';
+import { SpotifyService } from '../spotify.service';
 @Component({
   selector: 'app-redirect',
   templateUrl: './redirect.component.html',
@@ -15,13 +16,14 @@ export class RedirectComponent implements OnInit, OnDestroy {
   private  subsink: SubSink = new SubSink();
   constructor(
     private activatedRoute: ActivatedRoute,
-    private httpClient: HttpClient
+    private httpClient: HttpClient,
+    private spotifyService: SpotifyService
   ) {}
  
 
   ngOnInit(): void {
     const $auth_code = this.activatedRoute.queryParams.pipe(
-      mergeMap((params) => this.getToken(params)),
+      mergeMap((params) => this.spotifyService.getToken(params)),
       map((tokens) => tokens)
     );
 
@@ -37,16 +39,7 @@ export class RedirectComponent implements OnInit, OnDestroy {
   }
 
   //todo handle error ui wise.
-  getToken(params: any): Observable<SpotifyAuthToken> {
-    return this.httpClient.get<SpotifyAuthToken>('/api/get_token', {
-      params: {
-        grant_type: 'authorization_code',
-        code: params.code,
-        redirect_uri: environment.redirect_uri
-      },
-    }).pipe(catchError((err) => of(err)));
-
-  }
+  
 
 
 
