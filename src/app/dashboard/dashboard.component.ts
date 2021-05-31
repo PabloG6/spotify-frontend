@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { Observable } from 'rxjs';
 import { SpotifyService } from '../spotify.service';
 
 @Component({
@@ -7,11 +8,18 @@ import { SpotifyService } from '../spotify.service';
   styleUrls: ['./dashboard.component.scss']
 })
 export class DashboardComponent implements OnInit {
+  $playlists: Observable<any>;
 
-  constructor(private readonly spotifyService: SpotifyService) { }
+  constructor(private readonly spotifyService: SpotifyService) {
+    this.$playlists = this.spotifyService.getPlaylists();
+    
+   }
 
   ngOnInit(): void {
+    
   }
+
+  
 
 
   
