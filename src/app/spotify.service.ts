@@ -5,7 +5,8 @@ import { CookieService } from 'ngx-cookie-service';
 import { Observable, of } from 'rxjs';
 import { catchError, map, tap } from 'rxjs/operators';
 import { environment } from 'src/environments/environment';
-import { ISpotifyCredentials } from './models/token';
+import { Playlist } from './models/query.interface';
+import { ISpotifyCredentials } from './models/token.interface';
 
 @Injectable({
   providedIn: 'root',
@@ -19,7 +20,6 @@ export class SpotifyService {
   private httpHeaders: HttpHeaders = new HttpHeaders();
   setHttpHeaders() {
     if (this.credentials.access_token != null) {
-      console.log(this.credentials);
       this.httpHeaders = this.httpHeaders.set(
         'Authorization',
         `Bearer ${this.credentials.access_token}`
@@ -76,15 +76,8 @@ export class SpotifyService {
   }
 
   getPlaylists(): Observable<any> {
-    this.setHttpHeaders();
-    console.log(this.httpHeaders);
-    return this.httpClient.get('/v1/search', {
-      headers: this.httpHeaders,
-      params: {
-        limit: 6,
-        
-       
-      }
-    });
+    return this.httpClient.get<Playlist>('/api/playlists', {
+      
+    }).pipe(tap((response) => console.log(response)));
   }
 }

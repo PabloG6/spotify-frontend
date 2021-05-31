@@ -1,6 +1,6 @@
-<p>dashboard works!</p>
-<ul>
-    <li *ngFor="let playlist of ($playlists | async)?.playlists?.items">
-        <p>{{playlist.name}}</p>
+<ol>
+    <li *ngFor="let playlist of ($playlists | async)">
+        <!-- <p>{{playlist.name}}</p> -->
+        <a>{{playlist?.name}}</a>
     </li>
-</ul>
+</ol>

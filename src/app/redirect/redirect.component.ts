@@ -5,7 +5,7 @@ import { Observable, of } from 'rxjs';
 import { catchError, map, mergeMap } from 'rxjs/operators';
 import { environment } from 'src/environments/environment';
 import { SubSink } from 'subsink';
-import { ISpotifyCredentials } from '../models/token';
+import { ISpotifyCredentials } from '../models/token.interface';
 import { SpotifyService } from '../spotify.service';
 @Component({
   selector: 'app-redirect',

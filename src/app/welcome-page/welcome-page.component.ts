@@ -25,7 +25,6 @@ export class WelcomePageComponent implements OnInit {
       redirect_uri: environment.redirect_uri
     }});
     const externalUrl = "https://accounts.spotify.com/authorize?" + params.toString();
-    console.log(externalUrl);
     window.location.href = externalUrl;
 
   }
