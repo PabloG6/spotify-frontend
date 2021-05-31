@@ -5,10 +5,13 @@
         "logLevel": "debug",
         "pathRewrite": {"^/api": ""}
     },
-    "/v1/me/*": {
-        "target": "https://api.spotify.com/v1/me/",
-        "secure": true,
+    "/v1/*": {
+        "target": "https://api.spotify.com/v1/",
+        "secure": false,
         "logLevel": "debug",
-        "pathRewrite": {"^/v1/me/*": ""}
+        "changeOrigin": true,
+        "pathRewrite": {
+            "^/v1/": ""
+        }
     }
 }
