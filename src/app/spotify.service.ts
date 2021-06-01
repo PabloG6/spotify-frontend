@@ -12,6 +12,9 @@ import { ISpotifyCredentials } from './models/token.interface';
   providedIn: 'root',
 })
 export class SpotifyService {
+  getPlaylist(id: string): Observable<any> {
+    return this.httpClient.get(`/api/playlist/${id}`, {})
+  }
   constructor(
     private readonly httpClient: HttpClient,
     private readonly cookieService: CookieService

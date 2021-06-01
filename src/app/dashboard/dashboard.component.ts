@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Observable } from 'rxjs';
+import { Item } from '../models/query.interface';
 import { SpotifyService } from '../spotify.service';
 
 @Component({
@@ -20,6 +21,9 @@ export class DashboardComponent implements OnInit {
   }
 
   
+  getPlaylist(searchItem: Item): void {
+
+  }
 
 
   
