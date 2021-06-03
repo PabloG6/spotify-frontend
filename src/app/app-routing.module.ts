@@ -1,5 +1,6 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
+import { AuthGuard } from './auth-guard/auth.guard';
 import { DashboardComponent } from './dashboard/dashboard.component';
 import { LoginComponent } from './login/login.component';
 import { RedirectComponent } from './redirect/redirect.component';
@@ -22,7 +23,8 @@ const routes: Routes = [
   },
   {
     path: "dashboard",
-    component: DashboardComponent
+    component: DashboardComponent,
+    canActivate: [AuthGuard]
   },
   {
     path: "**",
