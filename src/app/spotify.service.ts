@@ -7,12 +7,16 @@ import {
 import { taggedTemplate } from '@angular/compiler/src/output/output_ast';
 import { Injectable } from '@angular/core';
 import { CookieService } from 'ngx-cookie-service';
-import { iif, Observable, of, throwError } from 'rxjs';
+import { EMPTY, iif, Observable, of, throwError } from 'rxjs';
 import {
   catchError,
+  delay,
+  flatMap,
   map,
   mergeMap,
   retryWhen,
+  shareReplay,
+  switchMap,
   take,
   tap,
 } from 'rxjs/operators';
@@ -25,7 +29,7 @@ import { ISpotifyCredentials } from './models/token.interface';
 })
 export class SpotifyService {
   getPlaylist(id: string): Observable<any> {
-    return this.httpClient.get(`/api/playlist/${id}`, {});
+    return this.httpClient.get(`/api/playlists/${id}`, {});
   }
   constructor(
     private readonly httpClient: HttpClient,
@@ -82,7 +86,7 @@ export class SpotifyService {
           this.credentials = credentials;
         }),
         catchError((err) => {
-          return of(err);
+          return throwError(err);
         })
       );
   }
@@ -90,30 +94,46 @@ export class SpotifyService {
   getPlaylists(): Observable<any> {
     console.log('get playlists');
     return this.httpClient
-      .get<Playlist>('/api/playlists/made-for-you', {})
+      .get<any>('/api/playlists/made-for-you', {})
       .pipe(
         retryWhen(this._refreshToken.bind(this)),
-        catchError((error: HttpErrorResponse) => {
-          return throwError(error);
+        delay(400),
+        catchError((err: any) => {
+          console.log(err);
+          return throwError(err);
         })
       );
   }
 
-  public refreshToken(): Observable<any> {
+  public refreshToken(refreshToken: string): Observable<any> {
     return this.httpClient
-      .post('/api/refresh_token', {})
-      .pipe(tap((val) => console.log(val)));
+      .post('/api/refresh_token', {
+        refresh_token: refreshToken,
+      })
+      .pipe(
+        tap((response: any) => {
+          this.cookieService.set('access_token', response.access_token);
+          console.log("refresh token");
+          console.log(this.credentials.access_token);
+        })
+      );
   }
 
-  public hello(): Observable<any> {
-    return of();
-  }
+  
   _refreshToken(error: Observable<any>): Observable<any> {
     return error.pipe(
-      mergeMap((error: HttpErrorResponse) => 
-        iif(() => error.status == 401, this.refreshToken())
-      ),
-      take(1)
+      mergeMap((err: any) => {
+        if(err instanceof HttpErrorResponse) {
+          if(err.status === 401) {
+            return this.refreshToken(this.credentials.refresh_token);
+          } else {
+            return throwError(err);
+          }
+        }
+        return throwError(err);
+
+      }),
+      take(2),
     );
   }
 }

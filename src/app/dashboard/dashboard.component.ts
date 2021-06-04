@@ -19,9 +19,13 @@ export class DashboardComponent implements OnInit {
 
   getPlaylists(): void {
     this.$playlists = this.spotifyService.getPlaylists();
+    
   }
 
   getPlaylist(searchItem: Item): void {
-    this.spotifyService.getPlaylist(searchItem.id);
+    console.log(searchItem);
+    this.spotifyService.getPlaylist(searchItem.id).subscribe((playlist) => {
+      console.log(playlist);
+    }, () => {})
   }
 }
