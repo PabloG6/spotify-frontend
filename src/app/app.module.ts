@@ -13,7 +13,10 @@ import { ShowTracksComponent } from './show-tracks/show-tracks.component';
 import { MatDialogModule } from '@angular/material/dialog';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatButtonModule } from '@angular/material/button';
+import {MatInputModule} from '@angular/material/input';
 import { FormsModule } from '@angular/forms';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { DatePipe } from '@angular/common';
 
 @NgModule({
   declarations: [
@@ -23,6 +26,7 @@ import { FormsModule } from '@angular/forms';
     RedirectComponent,
     DashboardComponent,
     ShowTracksComponent,
+    
   ],
   imports: [
     BrowserModule,
@@ -32,10 +36,14 @@ import { FormsModule } from '@angular/forms';
     MatDialogModule,
     MatCheckboxModule,
     MatButtonModule,
+    MatInputModule,
+    MatFormFieldModule,
     BrowserAnimationsModule,
   ],
 
-  providers: [],
+  providers: [
+    DatePipe
+  ],
   bootstrap: [AppComponent],
 })
 export class AppModule {}

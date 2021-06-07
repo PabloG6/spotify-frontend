@@ -12,33 +12,27 @@
         url: string;
     }
 
-    export interface ExternalUrls2 {
-        spotify: string;
-    }
+    
 
     export interface Owner {
-        external_urls: ExternalUrls2;
+        external_urls: ExternalUrls;
         href: string;
         id: string;
         type: string;
         uri: string;
     }
 
-    export interface ExternalUrls3 {
-        spotify: string;
-    }
+    
 
     export interface AddedBy {
-        external_urls: ExternalUrls3;
+        external_urls: ExternalUrls;
         href: string;
         id: string;
         type: string;
         uri: string;
     }
 
-    export interface ExternalUrls4 {
-        spotify: string;
-    }
+    
 
     export interface Image2 {
         height: number;
@@ -49,7 +43,7 @@
     export interface Album {
         album_type: string;
         available_markets: string[];
-        external_urls: ExternalUrls4;
+        external_urls: ExternalUrls;
         href: string;
         id: string;
         images: Image2[];
@@ -58,12 +52,9 @@
         uri: string;
     }
 
-    export interface ExternalUrls5 {
-        spotify: string;
-    }
-
+   
     export interface Artist {
-        external_urls: ExternalUrls5;
+        external_urls: ExternalUrls;
         href: string;
         id: string;
         name: string;
@@ -75,10 +66,7 @@
         isrc: string;
     }
 
-    export interface ExternalUrls6 {
-        spotify: string;
-    }
-
+   
     export interface Track {
         album: Album;
         artists: Artist[];
@@ -88,7 +76,7 @@
         explicit: boolean;
         selected: boolean;
         external_ids: ExternalIds;
-        external_urls: ExternalUrls6;
+        external_urls: ExternalUrls;
         href: string;
         id: string;
         name: string;

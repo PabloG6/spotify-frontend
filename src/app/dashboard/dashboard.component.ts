@@ -36,7 +36,7 @@ export class DashboardComponent implements OnInit {
       return playlists;
    })).subscribe((playlists: Playlist) => {
       console.log(playlists);
-      this.matDialog.open(ShowTracksComponent, {data: playlists, maxHeight: '620px', height: '360px'})
+      this.matDialog.open(ShowTracksComponent, {data: playlists, maxHeight: '600px', height: '100%', panelClass: 'track-dialog'},)
    });
 
    

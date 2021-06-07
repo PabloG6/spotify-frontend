@@ -22,6 +22,7 @@ import {
 } from 'rxjs/operators';
 import { environment } from 'src/environments/environment';
 import { Playlist } from './models/playlist.interface';
+import { Profile } from './models/profile.interface';
 import { PlaylistSearch } from './models/query.interface';
 import { ISpotifyCredentials } from './models/token.interface';
 
@@ -29,18 +30,24 @@ import { ISpotifyCredentials } from './models/token.interface';
   providedIn: 'root',
 })
 export class SpotifyService {
+  
   getPlaylist(id: string): Observable<Playlist> {
-    return this.httpClient.get<Playlist>(`/api/playlists/${id}`, {}).pipe(
-      retryWhen(this._refreshToken.bind(this)),
-
-    );
+    return this.httpClient
+      .get<Playlist>(`/api/playlists/${id}`, {})
+      .pipe(retryWhen(this._refreshToken.bind(this)));
   }
   constructor(
     private readonly httpClient: HttpClient,
     private readonly cookieService: CookieService
-  ) {}
+  ) {
+
+    this.getProfile().subscribe((profile) => {
+      this._profile = profile;
+    })
+  }
 
   private httpHeaders: HttpHeaders = new HttpHeaders();
+  private _profile!: Profile;
   setHttpHeaders() {
     if (this.credentials.access_token != null) {
       this.httpHeaders = this.httpHeaders
@@ -72,6 +79,10 @@ export class SpotifyService {
     return _credentials;
   }
 
+  get profile(): Profile {
+    return this._profile;
+  }
+
   getToken(params: any): Observable<ISpotifyCredentials> {
     return this.httpClient
       .get<ISpotifyCredentials>('/api/get_token', {
@@ -93,15 +104,13 @@ export class SpotifyService {
 
   getPlaylists(): Observable<any> {
     console.log('get playlists');
-    return this.httpClient
-      .get<any>('/api/playlists/made-for-you', {})
-      .pipe(
-        retryWhen(this._refreshToken.bind(this)),
-        catchError((err: any) => {
-          console.log(err);
-          return throwError(err);
-        })
-      );
+    return this.httpClient.get<any>('/api/playlists/made-for-you', {}).pipe(
+      retryWhen(this._refreshToken.bind(this)),
+      catchError((err: any) => {
+        console.log(err);
+        return throwError(err);
+      })
+    );
   }
 
   public refreshToken(refreshToken: string): Observable<any> {
@@ -112,27 +121,43 @@ export class SpotifyService {
       .pipe(
         tap((response: any) => {
           this.cookieService.set('access_token', response.access_token);
-          console.log("refresh token");
+          console.log('refresh token');
           console.log(this.credentials.access_token);
         })
       );
   }
 
-  
   _refreshToken(error: Observable<any>): Observable<any> {
     return error.pipe(
       mergeMap((err: any) => {
-        if(err instanceof HttpErrorResponse) {
-          if(err.status === 401) {
+        if (err instanceof HttpErrorResponse) {
+          if (err.status === 401) {
             return this.refreshToken(this.credentials.refresh_token);
           } else {
             return throwError(err);
           }
         }
         return throwError(err);
-
       }),
-      take(2),
+      take(2)
     );
   }
+
+  set profile(profile: Profile) {
+    this._profile = profile;
+  }
+  getProfile(): Observable<Profile> {
+    return this.httpClient.get<Profile>('/api/profile', {}).pipe(tap((profile: Profile) => {
+      this.profile = profile;
+    }));
+  }
+
+  createPlaylist(body: { name: string; description: string, user_id: string, tracks: string[]}) {
+    console.log(body);
+    this.httpClient.post<any>('/api/playlists', body).subscribe((response) => {
+      console.log(response);
+    });
+  }
+
+  
 }
