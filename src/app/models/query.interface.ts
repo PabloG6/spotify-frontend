@@ -39,7 +39,7 @@ export interface ExternalUrls {
     uri: string;
   }
   
-  export interface Playlist {
+  export interface PlaylistSearch {
     href: string;
     items: Item[];
     limit: number;
@@ -50,6 +50,6 @@ export interface ExternalUrls {
   }
   
   export interface RootObject {
-    playlists: Playlist;
+    playlists: PlaylistSearch;
   }
   

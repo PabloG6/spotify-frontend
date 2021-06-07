@@ -1,0 +1,19 @@
+
+<h1 mat-dialog-title>{{data?.name}}</h1>
+<mat-dialog-content>
+  <mat-checkbox
+    [indeterminate]="isSomeSelected"
+    [checked]="isAllSelected"
+    (change)="selectAll($event.checked)"
+  ></mat-checkbox>
+  <div *ngFor="let item of data?.tracks?.items">
+    <div class="track-container">
+      <mat-checkbox [(ngModel)]="item.track.selected"> </mat-checkbox>
+      <p>{{ item?.track?.name }}</p>
+    </div>
+  </div>
+</mat-dialog-content>
+<mat-dialog-actions align="end">
+  <button mat-stroked-button [mat-dialog-close]>Close</button>
+  <button mat-flat-button color="primary">Create</button>
+</mat-dialog-actions>

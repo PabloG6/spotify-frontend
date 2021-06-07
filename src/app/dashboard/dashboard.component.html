@@ -2,6 +2,7 @@
     <li *ngFor="let playlist of ($playlists | async)">
         <!-- <p>{{playlist.name}}</p> -->
         <button (click)="getPlaylist(playlist)">{{playlist?.name}}</button>
+        <p>{{playlist?.description}}</p>
     </li>
 
 </ol>

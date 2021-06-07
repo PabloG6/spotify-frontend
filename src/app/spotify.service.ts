@@ -21,15 +21,19 @@ import {
   tap,
 } from 'rxjs/operators';
 import { environment } from 'src/environments/environment';
-import { Playlist } from './models/query.interface';
+import { Playlist } from './models/playlist.interface';
+import { PlaylistSearch } from './models/query.interface';
 import { ISpotifyCredentials } from './models/token.interface';
 
 @Injectable({
   providedIn: 'root',
 })
 export class SpotifyService {
-  getPlaylist(id: string): Observable<any> {
-    return this.httpClient.get(`/api/playlists/${id}`, {});
+  getPlaylist(id: string): Observable<Playlist> {
+    return this.httpClient.get<Playlist>(`/api/playlists/${id}`, {}).pipe(
+      retryWhen(this._refreshToken.bind(this)),
+
+    );
   }
   constructor(
     private readonly httpClient: HttpClient,
@@ -49,16 +53,12 @@ export class SpotifyService {
   }
 
   set credentials(credentials: ISpotifyCredentials) {
-    this.cookieService.set('access_token', credentials.access_token, {
-      expires: credentials.expires_in,
-    });
+    this.cookieService.set('access_token', credentials.access_token);
     this.cookieService.set('expires_in', credentials.expires_in.toString(), {
       expires: credentials.expires_in,
     });
     this.cookieService.set('refresh_token', credentials.refresh_token);
-    this.cookieService.set('scope', credentials.scope, {
-      expires: credentials.expires_in,
-    });
+    this.cookieService.set('scope', credentials.scope);
   }
 
   get credentials() {
@@ -97,7 +97,6 @@ export class SpotifyService {
       .get<any>('/api/playlists/made-for-you', {})
       .pipe(
         retryWhen(this._refreshToken.bind(this)),
-        delay(400),
         catchError((err: any) => {
           console.log(err);
           return throwError(err);

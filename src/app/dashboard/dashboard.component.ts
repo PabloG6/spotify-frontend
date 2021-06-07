@@ -1,6 +1,10 @@
 import { Component, OnInit } from '@angular/core';
+import { MatDialog } from '@angular/material/dialog';
 import { Observable } from 'rxjs';
-import { Item } from '../models/query.interface';
+import { map } from 'rxjs/operators';
+import { Playlist } from '../models/playlist.interface';
+import { Item, PlaylistSearch } from '../models/query.interface';
+import { ShowTracksComponent } from '../show-tracks/show-tracks.component';
 import { SpotifyService } from '../spotify.service';
 
 @Component({
@@ -11,7 +15,7 @@ import { SpotifyService } from '../spotify.service';
 export class DashboardComponent implements OnInit {
   $playlists: Observable<any>;
 
-  constructor(private readonly spotifyService: SpotifyService) {
+  constructor(private readonly spotifyService: SpotifyService, private matDialog: MatDialog) {
     this.$playlists = this.spotifyService.getPlaylists();
   }
 
@@ -23,9 +27,18 @@ export class DashboardComponent implements OnInit {
   }
 
   getPlaylist(searchItem: Item): void {
-    console.log(searchItem);
-    this.spotifyService.getPlaylist(searchItem.id).subscribe((playlist) => {
-      console.log(playlist);
-    }, () => {})
+  
+   this.spotifyService.getPlaylist(searchItem.id).pipe(map(playlists => {
+      playlists.tracks.items.map(item => {
+       item.track.selected == true
+        return item;
+      });
+      return playlists;
+   })).subscribe((playlists: Playlist) => {
+      console.log(playlists);
+      this.matDialog.open(ShowTracksComponent, {data: playlists, maxHeight: '620px', height: '360px'})
+   });
+
+   
   }
 }
