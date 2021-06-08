@@ -2,17 +2,14 @@ import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { AuthGuard } from './auth-guard/auth.guard';
 import { DashboardComponent } from './dashboard/dashboard.component';
-import { LoginComponent } from './login/login.component';
+import { ErrorComponent } from './error/error.component';
 import { RedirectComponent } from './redirect/redirect.component';
 import { WelcomePageComponent } from './welcome-page/welcome-page.component';
 
 const routes: Routes = [
+  
   {
     path: "login",
-    component: LoginComponent
-  },
-  {
-    path: "",
     component: WelcomePageComponent
   },
 
@@ -22,12 +19,18 @@ const routes: Routes = [
     component: RedirectComponent
   },
   {
-    path: "dashboard",
+    path: "",
     component: DashboardComponent,
     canActivate: [AuthGuard]
   },
+
+  {
+    path: "error",
+    component: ErrorComponent,
+  },
   {
     path: "**",
+   
     component: WelcomePageComponent
   },
   
