@@ -13,7 +13,7 @@ import { SpotifyService } from '../spotify.service';
   styleUrls: ['./dashboard.component.scss'],
 })
 export class DashboardComponent implements OnInit {
-  $playlists: Observable<any>;
+  $playlists: Observable<Item[]>;
 
   constructor(private readonly spotifyService: SpotifyService, private matDialog: MatDialog) {
     this.$playlists = this.spotifyService.getPlaylists();
@@ -24,6 +24,10 @@ export class DashboardComponent implements OnInit {
   getPlaylists(): void {
     this.$playlists = this.spotifyService.getPlaylists();
     
+  }
+
+  getPlaylistImage(playlist: Item): string {
+    return playlist.images[0].url
   }
 
   getPlaylist(searchItem: Item): void {

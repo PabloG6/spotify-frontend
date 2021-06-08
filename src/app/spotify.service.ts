@@ -23,7 +23,7 @@ import {
 import { environment } from 'src/environments/environment';
 import { Playlist } from './models/playlist.interface';
 import { Profile } from './models/profile.interface';
-import { PlaylistSearch } from './models/query.interface';
+import { Item, PlaylistSearch } from './models/query.interface';
 import { ISpotifyCredentials } from './models/token.interface';
 
 @Injectable({
@@ -102,9 +102,9 @@ export class SpotifyService {
       );
   }
 
-  getPlaylists(): Observable<any> {
+  getPlaylists(): Observable<Item[]> {
     console.log('get playlists');
-    return this.httpClient.get<any>('/api/playlists/made-for-you', {}).pipe(
+    return this.httpClient.get<Item[]>('/api/playlists/made-for-you', {}).pipe(
       retryWhen(this._refreshToken.bind(this)),
       catchError((err: any) => {
         console.log(err);

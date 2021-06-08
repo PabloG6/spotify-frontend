@@ -1,7 +1,7 @@
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { HttpClientModule } from '@angular/common/http';
-
+import {MatGridListModule} from '@angular/material/grid-list';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { LoginComponent } from './login/login.component';
@@ -16,7 +16,9 @@ import { MatButtonModule } from '@angular/material/button';
 import {MatInputModule} from '@angular/material/input';
 import { FormsModule } from '@angular/forms';
 import { MatFormFieldModule } from '@angular/material/form-field';
+import {MatCardModule} from '@angular/material/card';
 import { DatePipe } from '@angular/common';
+import { ErrorComponent } from './error/error.component';
 
 @NgModule({
   declarations: [
@@ -26,6 +28,7 @@ import { DatePipe } from '@angular/common';
     RedirectComponent,
     DashboardComponent,
     ShowTracksComponent,
+    ErrorComponent,
     
   ],
   imports: [
@@ -37,7 +40,9 @@ import { DatePipe } from '@angular/common';
     MatCheckboxModule,
     MatButtonModule,
     MatInputModule,
+    MatCardModule,
     MatFormFieldModule,
+    MatGridListModule,
     BrowserAnimationsModule,
   ],
 

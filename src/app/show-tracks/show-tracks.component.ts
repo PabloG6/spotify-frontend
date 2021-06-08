@@ -1,7 +1,7 @@
 import { DatePipe } from '@angular/common';
 import { Component, Inject, OnInit } from '@angular/core';
 import { MAT_DIALOG_DATA } from '@angular/material/dialog';
-import { Playlist } from '../models/playlist.interface';
+import { Playlist, Track } from '../models/playlist.interface';
 import { SpotifyService } from '../spotify.service';
 
 @Component({
@@ -62,5 +62,14 @@ export class ShowTracksComponent implements OnInit {
 
   get currentDate(): Date {
     return new Date();
+  }
+
+  getAlbumHeight(item: Track | undefined) {
+
+    return item?.album?.images[2]?.height ?? '64px';
+  }
+
+  getAlbumSrc(item: Track | undefined) {
+    return item?.album?.images[2]?.url
   }
 }

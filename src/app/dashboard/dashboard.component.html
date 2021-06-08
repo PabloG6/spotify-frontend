@@ -1,10 +1,9 @@
-<ol>
-    <li *ngFor="let playlist of ($playlists | async)">
-        <!-- <p>{{playlist.name}}</p> -->
-        <button (click)="getPlaylist(playlist)">{{playlist?.name}}</button>
-        <p>{{playlist?.description}}</p>
-    </li>
 
-</ol>
 
-<button (click)="getPlaylists()">Retrieve Playlist</button>
+    <div class="grid-container">
+        <mat-card class="display-card" *ngFor="let playlist of ($playlists | async)">
+            <img [src]="getPlaylistImage(playlist)">
+        </mat-card> 
+    </div>
+
+

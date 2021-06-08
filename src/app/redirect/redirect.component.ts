@@ -1,7 +1,7 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { Observable, of } from 'rxjs';
+import { Observable, of, throwError } from 'rxjs';
 import { catchError, map, mergeMap } from 'rxjs/operators';
 import { environment } from 'src/environments/environment';
 import { SubSink } from 'subsink';
@@ -24,13 +24,20 @@ export class RedirectComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     const $auth_code = this.activatedRoute.queryParams.pipe(
-      mergeMap((params) => this.spotifyService.getToken(params)),
+      mergeMap((params) => this.spotifyService.getToken(params).pipe(catchError((err) => {
+        if(err instanceof HttpErrorResponse) {
+          //todo something here...
+        }
+        this.router.navigate(['error'], {replaceUrl: true})
+        return throwError(err);
+      }))),
     );
 
     
 
     this.subsink.sink = $auth_code.subscribe((token) => {
-        this.router.navigate(['dashboard'])
+      
+        this.router.navigate([''])
     })
   }
 

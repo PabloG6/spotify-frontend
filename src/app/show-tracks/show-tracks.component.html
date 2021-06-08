@@ -1,10 +1,10 @@
-
 <mat-form-field class="full-width">
-    <mat-label>Title</mat-label>
-    <input matInput [(ngModel)]="playlistTitle">
+  <mat-label>Title</mat-label>
+  <input matInput [(ngModel)]="playlistTitle" />
 </mat-form-field>
 <mat-dialog-content>
   <mat-checkbox
+    id="select-all"
     [indeterminate]="isSomeSelected"
     [checked]="isAllSelected"
     (change)="selectAll($event.checked)"
@@ -12,11 +12,27 @@
   <div *ngFor="let item of data?.tracks?.items">
     <div class="track-container">
       <mat-checkbox [(ngModel)]="item.track.selected"> </mat-checkbox>
-      <p>{{ item?.track?.name }}</p>
+      <img class="track-album"
+        [width]="48"
+        [height]="48"
+        [src]="getAlbumSrc(item?.track)"
+      />
+      <div class="track-details-container">
+        <p class="body-1">{{ item?.track?.name }}</p>
+        <div class="track-artists-container">
+          <span
+            *ngFor="let artist of item?.track?.artists"
+            class="caption artist-tag"
+            >{{ artist?.name }}</span
+          >
+        </div>
+      </div>
     </div>
   </div>
 </mat-dialog-content>
 <mat-dialog-actions align="end">
   <button mat-stroked-button [mat-dialog-close]>Close</button>
-  <button mat-flat-button color="primary" (click)="createPlaylist()">Create</button>
+  <button mat-flat-button color="primary" (click)="createPlaylist()">
+    Create
+  </button>
 </mat-dialog-actions>
