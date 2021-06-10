@@ -120,7 +120,7 @@ export class SpotifyService {
       })
       .pipe(
         tap((response: any) => {
-          this.cookieService.set('access_token', response.access_token);
+          this.cookieService.set('access_token', response.access_token, {path: '/'});
           console.log('refresh token');
           console.log(this.credentials.access_token);
         })

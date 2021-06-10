@@ -1,38 +1,41 @@
-<mat-form-field class="full-width">
-  <mat-label>Title</mat-label>
-  <input matInput [(ngModel)]="playlistTitle" />
-</mat-form-field>
-<mat-dialog-content>
-  <mat-checkbox
-    id="select-all"
-    [indeterminate]="isSomeSelected"
-    [checked]="isAllSelected"
-    (change)="selectAll($event.checked)"
-  ></mat-checkbox>
-  <div *ngFor="let item of data?.tracks?.items">
-    <div class="track-container">
-      <mat-checkbox [(ngModel)]="item.track.selected"> </mat-checkbox>
-      <img class="track-album"
-        [width]="48"
-        [height]="48"
-        [src]="getAlbumSrc(item?.track)"
-      />
-      <div class="track-details-container">
-        <p class="body-1">{{ item?.track?.name }}</p>
-        <div class="track-artists-container">
-          <span
-            *ngFor="let artist of item?.track?.artists"
-            class="caption artist-tag"
-            >{{ artist?.name }}</span
-          >
+<table class="track-table">
+  <thead>
+    <tr>
+      <th><mat-checkbox
+        [indeterminate]="isSomeSelected"
+        [checked]="isAllSelected"
+        (change)="selectAll($event.checked)"
+        ></mat-checkbox></th>
+      <th>Title</th>
+      <th>Album</th>
+      <th>Duration</th>
+    </tr>
+  </thead>
+  <tbody class="track-body-container">
+    <tr *ngFor="let item of data?.tracks?.items">
+      <td>
+        <mat-checkbox
+        [(ngModel)]="item.track.selected" ></mat-checkbox>
+      </td>
+      <td class="track-title">
+        <div class="track-container">
+          <img class="track-album"
+            [width]="48"
+            [height]="48"
+            [src]="getAlbumSrc(item?.track)"
+          />
+          <div class="track-details-container">
+            <p class="body-1 no-wrap">{{ item?.track?.name }}</p>
+            <div class="track-artists-container">
+              <span
+                *ngFor="let artist of item?.track?.artists"
+                class="caption artist-tag">{{ artist?.name }}</span>
+            </div>
+          </div>
         </div>
-      </div>
-    </div>
-  </div>
-</mat-dialog-content>
-<mat-dialog-actions align="end">
-  <button mat-stroked-button [mat-dialog-close]>Close</button>
-  <button mat-flat-button color="primary" (click)="createPlaylist()">
-    Create
-  </button>
-</mat-dialog-actions>
+      </td>
+      <td>{{item?.track?.album?.name}}</td>
+      <td>{{getDuration(item?.track?.duration_ms)}}</td>
+    </tr>
+  </tbody>
+</table>

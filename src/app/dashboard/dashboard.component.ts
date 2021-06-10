@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
+import { Router } from '@angular/router';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { Playlist } from '../models/playlist.interface';
@@ -15,7 +16,7 @@ import { SpotifyService } from '../spotify.service';
 export class DashboardComponent implements OnInit {
   $playlists: Observable<Item[]>;
 
-  constructor(private readonly spotifyService: SpotifyService, private matDialog: MatDialog) {
+  constructor(private readonly spotifyService: SpotifyService, private readonly router: Router) {
     this.$playlists = this.spotifyService.getPlaylists();
   }
 
@@ -30,19 +31,11 @@ export class DashboardComponent implements OnInit {
     return playlist.images[0].url
   }
 
-  getPlaylist(searchItem: Item): void {
+  showTracks(searchItem: Item): void {
   
-   this.spotifyService.getPlaylist(searchItem.id).pipe(map(playlists => {
-      playlists.tracks.items.map(item => {
-       item.track.selected == true
-        return item;
-      });
-      return playlists;
-   })).subscribe((playlists: Playlist) => {
-      console.log(playlists);
-      this.matDialog.open(ShowTracksComponent, {data: playlists, maxHeight: '600px', height: '100%', panelClass: 'track-dialog'},)
-   });
+    this.router.navigate(['tracks', searchItem.id])
 
+   
    
   }
 }

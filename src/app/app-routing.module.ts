@@ -4,6 +4,7 @@ import { AuthGuard } from './auth-guard/auth.guard';
 import { DashboardComponent } from './dashboard/dashboard.component';
 import { ErrorComponent } from './error/error.component';
 import { RedirectComponent } from './redirect/redirect.component';
+import { ShowTracksComponent } from './show-tracks/show-tracks.component';
 import { WelcomePageComponent } from './welcome-page/welcome-page.component';
 
 const routes: Routes = [
@@ -24,6 +25,11 @@ const routes: Routes = [
     canActivate: [AuthGuard]
   },
 
+  {
+    path: "tracks/:id",
+    component: ShowTracksComponent,
+    
+  },
   {
     path: "error",
     component: ErrorComponent,

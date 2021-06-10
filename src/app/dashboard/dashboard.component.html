@@ -1,20 +1,18 @@
-
 <h1 class="header">
-    Made for Pablo Grant
+  Made for Pablo Grant
 </h1>
 <div class="grid-container">
 
-  <mat-card class="display-card" *ngFor="let playlist of $playlists | async">
-    <img
-      [src]="getPlaylistImage(playlist)"
-      class="display-img"
-      width="200px"
-      height="200px"
-    />
-    <div class="display-title-container">
-      <h4 class="display-title">{{ playlist?.name }}</h4>
-      <p class="caption">{{playlist?.description}}</p>
-    </div>
-  </mat-card>
+<mat-card class="display-card" *ngFor="let playlist of $playlists | async" (click)="showTracks(playlist)">
+  <img
+    [src]="getPlaylistImage(playlist)"
+    class="display-img"
+    width="200px"
+    height="200px"
+  />
+  <div class="display-title-container">
+    <h4 class="display-title">{{ playlist?.name }}</h4>
+    <p class="caption">{{playlist?.description}}</p>
+  </div>
+</mat-card>
 </div>
-
