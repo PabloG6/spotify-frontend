@@ -19,6 +19,9 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import {MatCardModule} from '@angular/material/card';
 import { DatePipe } from '@angular/common';
 import { ErrorComponent } from './error/error.component';
+import { ConfirmModalComponent } from './confirm-modal/confirm-modal.component';
+import { SuccessModalComponent } from './success-modal/success-modal.component';
+import { ErrorModalComponent } from './error-modal/error-modal.component';
 
 @NgModule({
   declarations: [
@@ -29,6 +32,10 @@ import { ErrorComponent } from './error/error.component';
     DashboardComponent,
     ShowTracksComponent,
     ErrorComponent,
+    ConfirmModalComponent,
+    SuccessModalComponent,
+    ErrorModalComponent,
+
     
   ],
   imports: [

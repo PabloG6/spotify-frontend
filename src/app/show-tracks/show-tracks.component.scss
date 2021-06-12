@@ -89,6 +89,14 @@ tbody tr td:first-child {
 .track-album {
   margin: 0 11px 20px 16px;
 }
+
+.text-container {
+  margin: 0 0 0 16px;
+}
+
+h4 {
+  margin-top: 0;
+}
 .track-table {
   max-height: 50vh;
   max-width: 75vw;
@@ -112,39 +120,48 @@ span.artist-tag:not(:last-child):after {
   width: 100%;
 }
 
-button.hero-button {
-  outline: none;
-color: white;
-background-color: #446DF6;
-font-size: 16px;
-border: none;
-padding: 16px 36px;
-border-radius: 32px;
-font-weight: 600;
-}
-
-button.neut-button {
-  outline: none;
-  color: #000;
-  background-color: #FFF;
-  font-size: 16px;
-  border: none;
-  padding: 16px 36px;
-  border-radius: 32px;
-  font-weight: 600;
-}
+// 
 
 .button-container {
   justify-content: flex-end;
+  margin: 16px 32px 0 0;
 }
 
 .button-container button:first-child {
   margin: 8px;
 }
+
+
+.title-input {
+  outline: none;
+  font-size: 48px;
+  max-width: 450px;
+  font-weight: bold;
+  background-color: transparent;
+  border: none;
+  margin-bottom: 0 0 12px;
+}
+
+.description-container {
+  max-width: 75vw;
+  justify-content: start;
+  align-items: start;
+  margin: 0 0 24px 0;
+  width: 100%;
+}
+
+.column {
+  display: flex;
+  flex-direction: column;
+}
+.title-input::placeholder {
+  font-size: 48px;
+  font-weight: bold;
+  text-align: center;
+}
 .row {
   display: flex;
   flex-direction: row;
- 
   width: 100%;
   max-width: 75vw;
 }

@@ -1,10 +1,11 @@
 import { DatePipe } from '@angular/common';
 import { Component, Inject, OnInit } from '@angular/core';
-import { MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { MatDialog, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { ActivatedRoute } from '@angular/router';
 import * as moment from 'moment';
 import { Observable } from 'rxjs';
-import { Playlist, Track } from '../models/playlist.interface';
+import { ConfirmModalComponent } from '../confirm-modal/confirm-modal.component';
+import { Item, Playlist, Track } from '../models/playlist.interface';
 import { SpotifyService } from '../spotify.service';
 
 @Component({
@@ -13,22 +14,21 @@ import { SpotifyService } from '../spotify.service';
   styleUrls: ['./show-tracks.component.scss'],
 })
 export class ShowTracksComponent implements OnInit {
-    // $data: Observable<any>;
-    data: Playlist | undefined;
+  // $data: Observable<any>;
+  data: Playlist | undefined;
+  title: string = '';
   constructor(
     private readonly spotifyService: SpotifyService,
     private readonly datePipe: DatePipe,
+    private readonly matDialog: MatDialog,
     private readonly activatedRoute: ActivatedRoute
   ) {
-    this.playlistTitle = "Hello World"
+    this.playlistTitle = 'Hello World';
     const id = this.activatedRoute.snapshot.params.id;
-    // this.$data = this.spotifyService.getPlaylist(id)
     this.spotifyService.getPlaylist(id).subscribe((data) => {
-      console.log(data);
       this.data = data;
-    })
+    });
   }
-
 
   playlistTitle: string | undefined;
   ngOnInit(): void {}
@@ -37,10 +37,10 @@ export class ShowTracksComponent implements OnInit {
     const filteredTracks = this.data?.tracks.items.filter(
       (track) => track.track.selected
     );
-    return (
-      filteredTracks != undefined ? filteredTracks?.length > 0 &&
-      this.data?.tracks.items.length != filteredTracks.length: false
-    );
+    return filteredTracks != undefined
+      ? filteredTracks?.length > 0 &&
+          this.data?.tracks.items.length != filteredTracks.length
+      : false;
   }
 
   get isAllSelected() {
@@ -60,22 +60,20 @@ export class ShowTracksComponent implements OnInit {
   }
 
   createPlaylist(): void {
-    // const tracks = this.data.tracks.items.filter(item => item.track.selected).map((item) => item.track.uri);
+    console.log('hello world');
+    const tracks = this.data?.tracks.items.filter((item) => item.track.selected).map((item) => item.track.uri) ?? [];
 
-    // this.spotifyService.createPlaylist(
-    //   {
-    //     name: this.playlistTitle ?? `${this.data.name} | ${this.datePipe.transform(this.currentDate)}`,
-    //     description: '',
-    //     user_id: this.spotifyService.profile.id,
-    //     tracks: tracks
-    //   }
-    // );
+    if(this.title && tracks.length > 0)
+    this.matDialog.open(ConfirmModalComponent, {
+      data: { tracks: tracks , title: this.title},
+      maxWidth: '300px',
+      
+    });
   }
 
   getDuration(milliseconds: number | undefined) {
-    if(milliseconds == undefined) return "-"
-    return moment(milliseconds).format("mm:ss")
-    
+    if (milliseconds == undefined) return '-';
+    return moment(milliseconds).format('mm:ss');
   }
 
   get currentDate(): Date {
@@ -83,11 +81,15 @@ export class ShowTracksComponent implements OnInit {
   }
 
   getAlbumHeight(item: Track | undefined) {
-
     return item?.album?.images[2]?.height ?? '64px';
   }
 
   getAlbumSrc(item: Track | undefined) {
-    return item?.album?.images[2]?.url
+    return item?.album?.images[2]?.url;
+  }
+
+  getPlaylistSrc(data: Playlist | undefined): string | undefined {
+    console.log('playlist', data?.images[0]?.url);
+    return data?.images[0]?.url;
   }
 }

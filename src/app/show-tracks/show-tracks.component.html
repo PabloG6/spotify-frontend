@@ -1,3 +1,13 @@
+  <div>
+    <input class="title-input" placeholder="Playlist Title" [(ngModel)]="title">
+  </div>
+  <div class="description-container row">
+    <img [src]="getPlaylistSrc(data)" [width]="84" [height]="84">
+    <div class="text-container"> 
+      <h4>{{data?.name}}</h4>
+    <p>{{data?.description}}</p>
+    </div>
+  </div>
 <table class="track-table">
   <thead>
     <tr>
@@ -40,6 +50,6 @@
   </tbody>
 </table>
 <div class="row button-container">
-  <button class="neut-button">Cancel</button>
-  <button class="hero-button">Create</button>
+  <button class="secondary">Cancel</button>
+  <button class="primary" (click)="createPlaylist()">Create</button>
 </div>

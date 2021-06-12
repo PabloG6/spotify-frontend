@@ -152,11 +152,9 @@ export class SpotifyService {
     }));
   }
 
-  createPlaylist(body: { name: string; description: string, user_id: string, tracks: string[]}) {
+  createPlaylist(body: { name: string; description: string, user_id: string, tracks: string[]}): Observable<any> {
     console.log(body);
-    this.httpClient.post<any>('/api/playlists', body).subscribe((response) => {
-      console.log(response);
-    });
+    return this.httpClient.post<any>('/api/playlists', body);
   }
 
   
