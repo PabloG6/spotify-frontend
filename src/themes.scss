@@ -1,0 +1,27 @@
+@use "@angular/material" as mat;
+@use "theming/palettes" as pat;
+@use "theming/buttons" as but;
+@include mat.core();
+
+
+@include mat.core();
+
+$my-primary: mat.define-palette(pat.$mat-primary, 500);
+$my-accent: mat.define-palette(pat.$mat-secondary, A200, A100, A400);
+
+$my-theme: mat.define-light-theme((
+ color: (
+   primary: $my-primary,
+   accent: $my-accent,
+ )
+));
+
+$checkbox-theme: mat.define-light-theme((
+  color: (
+    primary: $my-accent,
+    accent: $my-primary
+  )
+));
+
+@include mat.all-component-themes($my-theme);
+@include mat.checkbox-theme($checkbox-theme);
