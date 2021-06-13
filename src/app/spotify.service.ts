@@ -30,7 +30,6 @@ import { ISpotifyCredentials } from './models/token.interface';
   providedIn: 'root',
 })
 export class SpotifyService {
-  
   getPlaylist(id: string): Observable<Playlist> {
     return this.httpClient
       .get<Playlist>(`/api/playlists/${id}`, {})
@@ -40,10 +39,9 @@ export class SpotifyService {
     private readonly httpClient: HttpClient,
     private readonly cookieService: CookieService
   ) {
-
     this.getProfile().subscribe((profile) => {
       this._profile = profile;
-    })
+    });
   }
 
   private httpHeaders: HttpHeaders = new HttpHeaders();
@@ -120,7 +118,9 @@ export class SpotifyService {
       })
       .pipe(
         tap((response: any) => {
-          this.cookieService.set('access_token', response.access_token, {path: '/'});
+          this.cookieService.set('access_token', response.access_token, {
+            path: '/',
+          });
           console.log('refresh token');
           console.log(this.credentials.access_token);
         })
@@ -147,15 +147,32 @@ export class SpotifyService {
     this._profile = profile;
   }
   getProfile(): Observable<Profile> {
-    return this.httpClient.get<Profile>('/api/profile', {}).pipe(tap((profile: Profile) => {
-      this.profile = profile;
-    }));
+    return this.httpClient.get<Profile>('/api/profile', {}).pipe(
+      tap((profile: Profile) => {
+        this.profile = profile;
+      })
+    );
   }
 
-  createPlaylist(body: { name: string; description: string, user_id: string, tracks: string[]}): Observable<any> {
+  createPlaylist(body: {
+    name: string;
+    description: string;
+    tracks: string[];
+    user_id?: string;
+  }): Observable<any> {
     console.log(body);
-    return this.httpClient.post<any>('/api/playlists', body);
+    if (this.profile === null || this.profile === undefined) {
+      return this.getProfile().pipe(
+        tap((profile) => {
+          this.profile = profile;
+          body.user_id = profile.id
+        }),
+        mergeMap(() => this.httpClient.post<any>('/api/playlists', body))
+      ).pipe(mergeMap(this._refreshToken.bind(this)));
+    }
+    body.user_id  = this.profile.id;
+    return this.httpClient
+      .post<any>('/api/playlists', body)
+      .pipe(mergeMap(this._refreshToken.bind(this)));
   }
-
-  
 }
