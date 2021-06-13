@@ -1,7 +1,9 @@
+<h3>Save this playlist?</h3>
 <mat-dialog-content class="mat-typography">
-    <h2>
-        Are you sure you'd like to copy this playlist?
-    </h2>
+    <p>
+        Are you sure you'd like to copy <strong>{{data?.tracks.length}}</strong> tracks
+        from <strong>{{data?.playlistName}}</strong> to <strong>{{data?.title}}</strong>
+    </p>
 </mat-dialog-content>
 <mat-dialog-actions align="end">
     <button class="secondary small">Never mind</button>

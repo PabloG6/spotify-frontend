@@ -1,5 +1,5 @@
 import { Component, Inject, OnInit } from '@angular/core';
-import { MatDialog, MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { mergeMap } from 'rxjs/operators';
 import { ErrorModalComponent } from '../error-modal/error-modal.component';
 import { ErrorComponent } from '../error/error.component';
@@ -14,7 +14,7 @@ import { SuccessModalComponent } from '../success-modal/success-modal.component'
 export class ConfirmModalComponent implements OnInit {
 
   constructor(private readonly spotifyService: SpotifyService,  
-    @Inject(MAT_DIALOG_DATA) private data: any, private readonly matDialog: MatDialog) { }
+    @Inject(MAT_DIALOG_DATA) public data: any, private readonly matDialog: MatDialog, private matDialogRef: MatDialogRef<ConfirmModalComponent>) { }
 
   ngOnInit(): void {
   }
@@ -26,17 +26,19 @@ export class ConfirmModalComponent implements OnInit {
       {
         name: this.data.title ,
         description: '',
-        user_id: this.spotifyService.profile.id,
         tracks: this.data?.tracks
       }
     ).subscribe((val) => {
-      this.matDialog.open(SuccessModalComponent, {
+      this.matDialogRef.close();
+      const dialogRef: MatDialogRef<any> = this.matDialog.open(SuccessModalComponent, {
         maxWidth: "300px",
         data: {
           successTitle: "Back To Home Page"
         }
 
-      })
+      });
+
+      
     }, () => {
       this.matDialog.open(ErrorModalComponent, {maxWidth: '300px'})
     }, () => {})
