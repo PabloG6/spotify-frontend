@@ -28,7 +28,7 @@ const routes: Routes = [
   {
     path: "tracks/:id",
     component: ShowTracksComponent,
-    
+    canActivate: [AuthGuard]
   },
   {
     path: "error",
