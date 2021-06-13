@@ -65,8 +65,9 @@ export class ShowTracksComponent implements OnInit {
 
     if(this.title && tracks.length > 0)
     this.matDialog.open(ConfirmModalComponent, {
-      data: { tracks: tracks , title: this.title},
+      data: { tracks: tracks , title: this.title, playlistName: this.data?.name},
       maxWidth: '300px',
+      panelClass: 'custom-modal'
       
     });
   }
