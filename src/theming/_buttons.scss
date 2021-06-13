@@ -20,7 +20,9 @@ button.hero-button {
     font-weight: 600;
   }
 
-
+  button {
+    cursor: pointer;
+  }
  
   button.primary {
     outline: none;
@@ -31,9 +33,11 @@ button.hero-button {
     padding: 16px 36px;
     border-radius: 32px;
     font-weight: 600;
+    
   }
 
  
+  
   
   button.secondary {
     outline: none;
