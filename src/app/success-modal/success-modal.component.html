@@ -1,9 +1,9 @@
-<h3 mat-dialog-title>Success!</h3>
-<div id="success-separator">
-
-</div>
-<mat-dialog-actions>
-    <button class="hero-button">
-        {{data.successTitle}}
+<h4 mat-dialog-title>Success!</h4>
+<mat-dialog-content>
+    Check your Spotify Account to see your new playlist.
+</mat-dialog-content>
+<mat-dialog-actions align="right">
+    <button mat-flat-button color="primary" [mat-dialog-close]="true" >
+        OK
     </button>
 </mat-dialog-actions>
