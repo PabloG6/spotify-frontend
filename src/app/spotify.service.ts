@@ -1,22 +1,18 @@
 import {
   HttpClient,
   HttpErrorResponse,
-  HttpHeaders,
-  HttpResponse,
+  HttpHeaders
 } from '@angular/common/http';
-import { taggedTemplate } from '@angular/compiler/src/output/output_ast';
 import { Injectable } from '@angular/core';
 import { CookieService } from 'ngx-cookie-service';
-import { EMPTY, iif, Observable, of, throwError } from 'rxjs';
+import { EMPTY, Observable, throwError } from 'rxjs';
 import {
   catchError,
-  delay,
-  flatMap,
-  map,
+  
   mergeMap,
+  retry,
   retryWhen,
-  shareReplay,
-  switchMap,
+  
   take,
   tap,
 } from 'rxjs/operators';
@@ -158,21 +154,14 @@ export class SpotifyService {
     name: string;
     description: string;
     tracks: string[];
-    user_id?: string;
+    user_id: string;
   }): Observable<any> {
     console.log(body);
-    if (this.profile === null || this.profile === undefined) {
-      return this.getProfile().pipe(
-        tap((profile) => {
-          this.profile = profile;
-          body.user_id = profile.id
-        }),
-        mergeMap(() => this.httpClient.post<any>('/api/playlists', body))
-      ).pipe(mergeMap(this._refreshToken.bind(this)));
-    }
+    //todo change this to use route params
+    
     body.user_id  = this.profile.id;
     return this.httpClient
       .post<any>('/api/playlists', body)
-      .pipe(mergeMap(this._refreshToken.bind(this)));
+      .pipe(retryWhen(this._refreshToken.bind(this)));
   }
 }
