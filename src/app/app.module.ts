@@ -4,7 +4,6 @@ import { HttpClientModule } from '@angular/common/http';
 import {MatGridListModule} from '@angular/material/grid-list';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
-import { LoginComponent } from './login/login.component';
 import { WelcomePageComponent } from './welcome-page/welcome-page.component';
 import { RedirectComponent } from './redirect/redirect.component';
 import { DashboardComponent } from './dashboard/dashboard.component';
@@ -22,11 +21,12 @@ import { ErrorComponent } from './error/error.component';
 import { ConfirmModalComponent } from './confirm-modal/confirm-modal.component';
 import { SuccessModalComponent } from './success-modal/success-modal.component';
 import { ErrorModalComponent } from './error-modal/error-modal.component';
+import { HomeComponent } from './home/home.component';
 
 @NgModule({
   declarations: [
     AppComponent,
-    LoginComponent,
+    
     WelcomePageComponent,
     RedirectComponent,
     DashboardComponent,
@@ -35,6 +35,7 @@ import { ErrorModalComponent } from './error-modal/error-modal.component';
     ConfirmModalComponent,
     SuccessModalComponent,
     ErrorModalComponent,
+    HomeComponent,
 
     
   ],
