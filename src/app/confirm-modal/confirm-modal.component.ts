@@ -26,6 +26,7 @@ export class ConfirmModalComponent implements OnInit {
       {
         name: this.data.title ,
         description: '',
+        user_id: this.data.user_id,
         tracks: this.data?.tracks
       }
     ).subscribe((val) => {
@@ -39,8 +40,6 @@ export class ConfirmModalComponent implements OnInit {
       });
 
       
-    }, () => {
-      this.matDialog.open(ErrorModalComponent, {maxWidth: '300px'})
-    }, () => {})
+    })
   }
 }

@@ -4,6 +4,7 @@ import { MatDialog, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { ActivatedRoute } from '@angular/router';
 import * as moment from 'moment';
 import { Observable } from 'rxjs';
+import { map } from 'rxjs/operators';
 import { ConfirmModalComponent } from '../confirm-modal/confirm-modal.component';
 import { Item, Playlist, Track } from '../models/playlist.interface';
 import { SpotifyService } from '../spotify.service';
@@ -24,8 +25,23 @@ export class ShowTracksComponent implements OnInit {
     private readonly activatedRoute: ActivatedRoute
   ) {
     this.playlistTitle = 'Hello World';
+    console.log(this.activatedRoute.snapshot.params);
     const id = this.activatedRoute.snapshot.params.id;
-    this.spotifyService.getPlaylist(id).subscribe((data) => {
+    this.spotifyService.getPlaylist(id).pipe(
+      map((data) => {
+        data.tracks.items = data.tracks.items.filter((item, index) => {
+          if(item.track == null) {
+            console.log(`this is the null item: ${index}`, item);
+          }
+
+          
+          return item.track != null
+        
+        });
+        console.log("object length", data.tracks.items.length);
+        return data;
+      })
+    ).subscribe((data) => {
       this.data = data;
     });
   }
@@ -41,13 +57,12 @@ export class ShowTracksComponent implements OnInit {
       ? filteredTracks?.length > 0 &&
           this.data?.tracks.items.length != filteredTracks.length
       : false;
+
   }
 
-  get isAllSelected() {
-    return (
-      this.data?.tracks.items.filter((track) => track.track.selected).length ==
-      this.data?.tracks.items.length
-    );
+  get isAllSelected() { 
+       return  this.data?.tracks.items.every(item => item.track.selected) ?? false;
+
   }
   selectAll(selected: boolean): void {
     if (this.data?.tracks.items == undefined) {
@@ -65,7 +80,7 @@ export class ShowTracksComponent implements OnInit {
 
     if(this.title && tracks.length > 0)
     this.matDialog.open(ConfirmModalComponent, {
-      data: { tracks: tracks , title: this.title, playlistName: this.data?.name},
+      data: { tracks: tracks , title: this.title, playlistName: this.data?.name, user_id: this.activatedRoute.snapshot.params.user_id},
       maxWidth: '300px',
       panelClass: 'custom-modal'
       
@@ -90,7 +105,6 @@ export class ShowTracksComponent implements OnInit {
   }
 
   getPlaylistSrc(data: Playlist | undefined): string | undefined {
-    console.log('playlist', data?.images[0]?.url);
     return data?.images[0]?.url;
   }
 }
