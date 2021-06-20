@@ -1,6 +1,6 @@
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
-import { HttpClientModule } from '@angular/common/http';
+import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import {MatGridListModule} from '@angular/material/grid-list';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -22,6 +22,8 @@ import { ConfirmModalComponent } from './confirm-modal/confirm-modal.component';
 import { SuccessModalComponent } from './success-modal/success-modal.component';
 import { ErrorModalComponent } from './error-modal/error-modal.component';
 import { HomeComponent } from './home/home.component';
+import { SpotifyInterceptor } from './spotify.interceptor';
+import { SpotifyService } from './spotify.service';
 
 @NgModule({
   declarations: [
@@ -39,6 +41,7 @@ import { HomeComponent } from './home/home.component';
 
     
   ],
+  
   imports: [
     BrowserModule,
     FormsModule,
@@ -55,7 +58,12 @@ import { HomeComponent } from './home/home.component';
   ],
 
   providers: [
-    DatePipe
+    DatePipe,
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: SpotifyInterceptor,
+      multi: true
+    }
   ],
   bootstrap: [AppComponent],
 })
