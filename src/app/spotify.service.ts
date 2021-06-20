@@ -16,7 +16,7 @@ import {
   take,
   tap,
 } from 'rxjs/operators';
-import { environment } from 'src/environments/environment';
+import { environment } from '../environments/environment';
 import { Playlist } from './models/playlist.interface';
 import { Profile } from './models/profile.interface';
 import { Item, PlaylistSearch } from './models/query.interface';
@@ -53,14 +53,7 @@ export class SpotifyService {
     //todo retrieve a new token using the refresh token
   }
 
-  set credentials(credentials: ISpotifyCredentials) {
-    this.cookieService.set('access_token', credentials.access_token);
-    this.cookieService.set('expires_in', credentials.expires_in.toString(), {
-      expires: credentials.expires_in,
-    });
-    this.cookieService.set('refresh_token', credentials.refresh_token);
-    this.cookieService.set('scope', credentials.scope);
-  }
+  
 
   get credentials() {
     const _credentials: ISpotifyCredentials = {
@@ -78,6 +71,7 @@ export class SpotifyService {
   }
 
   getToken(params: any): Observable<ISpotifyCredentials> {
+    console.log(environment.redirect_uri);
     return this.httpClient
       .get<ISpotifyCredentials>('/api/get_token', {
         params: {
@@ -85,11 +79,10 @@ export class SpotifyService {
           code: params.code,
           redirect_uri: environment.redirect_uri,
         },
+
       })
       .pipe(
-        tap((credentials) => {
-          this.credentials = credentials;
-        }),
+       
         catchError((err) => {
           return throwError(err);
         })
@@ -113,13 +106,7 @@ export class SpotifyService {
         refresh_token: refreshToken,
       })
       .pipe(
-        tap((response: any) => {
-          this.cookieService.set('access_token', response.access_token, {
-            path: '/',
-          });
-          console.log('refresh token');
-          console.log(this.credentials.access_token);
-        })
+        
       );
   }
 

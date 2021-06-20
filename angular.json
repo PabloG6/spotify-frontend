@@ -20,6 +20,7 @@
         "build": {
           "builder": "@angular-devkit/build-angular:browser",
           "options": {
+           
             "outputPath": "dist/spotify-frontend",
             "index": "src/index.html",
             "main": "src/main.ts",
@@ -71,7 +72,9 @@
         },
         "serve": {
           "builder": "@angular-devkit/build-angular:dev-server",
-          "options": {"proxyConfig": "src/proxy-dev.conf.json"},
+          "options": {
+          }
+            ,
           "configurations": {
             "production": {
               "browserTarget": "spotify-frontend:build:production"

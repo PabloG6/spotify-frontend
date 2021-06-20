@@ -1,7 +1,7 @@
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
 import { Router, UrlSerializer } from '@angular/router';
-import { environment } from 'src/environments/environment';
+import { environment } from './../../environments/environment';
 
 @Component({
   selector: 'app-welcome-page',
@@ -17,6 +17,7 @@ export class WelcomePageComponent implements OnInit {
 
   authenticate() {
     const scope = 'user-read-email playlist-modify-public playlist-modify-private playlist-read-private playlist-read-collaborative';
+    console.log(environment.redirect_uri);
     const params = new HttpParams({fromObject: {
       response_type: 'code',
       scope: scope, 

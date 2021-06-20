@@ -3,7 +3,7 @@ import { Component, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Observable, of, throwError } from 'rxjs';
 import { catchError, map, mergeMap } from 'rxjs/operators';
-import { environment } from 'src/environments/environment';
+
 import { SubSink } from 'subsink';
 import { Profile } from '../models/profile.interface';
 import { ISpotifyCredentials } from '../models/token.interface';
