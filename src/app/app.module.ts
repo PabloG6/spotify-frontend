@@ -28,7 +28,6 @@ import { SpotifyService } from './spotify.service';
 @NgModule({
   declarations: [
     AppComponent,
-    
     WelcomePageComponent,
     RedirectComponent,
     DashboardComponent,
