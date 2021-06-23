@@ -52,6 +52,6 @@
   </tbody>
 </table>
 <div class="row button-container">
-  <button class="secondary">Cancel</button>
+  <button class="secondary" [routerLink]="['/dashboard', userId]">Cancel</button>
   <button class="primary" (click)="createPlaylist()">Create</button>
 </div>

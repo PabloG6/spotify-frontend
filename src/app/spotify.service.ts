@@ -133,6 +133,7 @@ export class SpotifyService {
     return this.httpClient.get<Profile>('/api/profile', {}).pipe(
       tap((profile: Profile) => {
         this.profile = profile;
+        this.cookieService.set('user_name', profile.display_name, {path: '/'})
       })
     );
   }

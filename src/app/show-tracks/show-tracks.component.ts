@@ -3,7 +3,6 @@ import { Component, Inject, OnInit } from '@angular/core';
 import { MatDialog, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { ActivatedRoute } from '@angular/router';
 import * as moment from 'moment';
-import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { ConfirmModalComponent } from '../confirm-modal/confirm-modal.component';
 import { Item, Playlist, Track } from '../models/playlist.interface';
@@ -21,6 +20,7 @@ export class ShowTracksComponent implements OnInit {
   constructor(
     private readonly spotifyService: SpotifyService,
     private readonly datePipe: DatePipe,
+    private readonly _activatedRoute: ActivatedRoute,
     private readonly matDialog: MatDialog,
     private readonly activatedRoute: ActivatedRoute
   ) {
@@ -74,10 +74,15 @@ export class ShowTracksComponent implements OnInit {
     });
   }
 
+  get userId() {
+    return this._activatedRoute.snapshot.parent?.paramMap.get('user_id');
+  }
+
   createPlaylist(): void {
     console.log('hello world');
     const tracks = this.data?.tracks.items.filter((item) => item.track.selected).map((item) => item.track.uri) ?? [];
 
+    
     if(this.title && tracks.length > 0)
     this.matDialog.open(ConfirmModalComponent, {
       data: { tracks: tracks , title: this.title, playlistName: this.data?.name, user_id: this.activatedRoute.snapshot.params.user_id},

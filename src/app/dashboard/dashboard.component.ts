@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { ActivatedRoute, Router } from '@angular/router';
+import { CookieService } from 'ngx-cookie-service';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { Playlist } from '../models/playlist.interface';
@@ -15,27 +16,32 @@ import { SpotifyService } from '../spotify.service';
 })
 export class DashboardComponent implements OnInit {
   $playlists: Observable<Item[]>;
-
-  constructor(private readonly spotifyService: SpotifyService, private readonly router: Router, private readonly _activatedRoute: ActivatedRoute) {
+  get username() {
+    return this.cookieService.get('user_name');
+  }
+  constructor(
+    private readonly cookieService: CookieService,
+    private readonly spotifyService: SpotifyService,
+    private readonly router: Router,
+    private readonly _activatedRoute: ActivatedRoute
+  ) {
     this.$playlists = this.spotifyService.getPlaylists();
   }
 
+  
   ngOnInit(): void {}
 
   getPlaylists(): void {
     this.$playlists = this.spotifyService.getPlaylists();
-    
   }
 
   getPlaylistImage(playlist: Item): string {
-    return playlist.images[0].url
+    return playlist.images[0].url;
   }
 
   showTracks(searchItem: Item): void {
-  
-    this.router.navigate(['tracks', searchItem.id], {relativeTo: this._activatedRoute});
-
-   
-   
+    this.router.navigate(['tracks', searchItem.id], {
+      relativeTo: this._activatedRoute,
+    });
   }
 }
